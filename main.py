@@ -11,6 +11,22 @@ words = [
     "happy", "brave", "calm", "eager", "fancy", "gentle", "jolly", "kind",
     "travel", "journey", "adventure", "explore", "discover", "wander", "voyage", "roam"
 ]
+
+
+def update_state(secret_word, guessed_letters, guess, lives):
+    guess = guess.lower()
+
+    if guess in guessed_letters:
+        return guessed_letters, lives
+
+    new_guessed_letters = guessed_letters + [guess]
+
+    if guess in secret_word:
+        return new_guessed_letters, lives
+    else:
+        return new_guessed_letters, lives - 1
+    
+
 word = random.choice(words)
 guessed_word = []
 for i in range(len(word)):

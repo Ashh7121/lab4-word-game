@@ -11,55 +11,75 @@ words = [
     "happy", "brave", "calm", "eager", "fancy", "gentle", "jolly", "kind",
     "travel", "journey", "adventure", "explore", "discover", "wander", "voyage", "roam"
 ]
-
-
-def update_state(secret_word, guessed_letters, guess, lives):
-    guess = guess.lower()
-
-    if guess in guessed_letters:
-        return guessed_letters, lives
-
+def update_game_state(secret_word, guessed_letters, guess, lives):
     new_guessed_letters = guessed_letters + [guess]
-
     if guess in secret_word:
-        return new_guessed_letters, lives
+        new_lives = lives
     else:
-        return new_guessed_letters, lives - 1
-    
+        new_lives = lives - 1
 
-word = random.choice(words)
-guessed_word = []
-for i in range(len(word)):
-    guessed_word.append("_")
+    return new_guessed_letters, new_lives
 
 
-guessed_letters = []
-attempts = 6
+def choose_word(words):
+    return random.choice(words)
 
-print("Welcome to Hangman!")
+def create_guessed_word(word):
+    return ["_"] * len(word)
 
-while attempts > 0 and "_" in guessed_word:
-    print("\nWord:", " ".join(guessed_word))
-    print("Attempts left:", attempts)
-    print("Guessed letters:", guessed_letters)
+def process_guess(secret_word, guessed_word, guess):
+    for i in range(len(secret_word)):
+        if secret_word[i] == guess:
+            guessed_word[i] = guess
 
-    guess = input("Guess a letter: ").lower()
-    if guess in guessed_letters:
-        print("You already guessed that letter.")
-        continue
+def is_word_complete(guessed_word):
+    return "_" not in guessed_word
 
-    guessed_letters.append(guess)
-    if guess in word:
-        print("Good guess!")
-        for i in range(len(word)):
-            if word[i] == guess:
-                guessed_word[i] = guess
+
+def play_game(words):
+    secret_word = choose_word(words)
+    guessed_word = create_guessed_word(secret_word)
+
+    guessed_letters = []
+    lives = 6
+
+    print("Welcome to Hangman!")
+
+    while lives > 0 and not is_word_complete(guessed_word):
+        print("\nWord:", " ".join(guessed_word))
+        print("Lives left:", lives)
+        print("Guessed letters:", guessed_letters)
+
+        guess = input("Guess a letter: ").lower()
+
+        if guess in guessed_letters:
+            print("You already guessed that letter.")
+            continue
+
+        guessed_letters, lives = update_game_state(secret_word, guessed_letters, guess, lives)
+
+        process_guess(secret_word, guessed_word, guess)
+
+        if guess in secret_word:
+            print("Good guess!")
+        else:
+            print("Wrong guess.")
+
+    if is_word_complete(guessed_word):
+        print("\nCongratulations! You guessed the word:", secret_word)
     else:
-        print("Wrong guess.")
-        attempts -= 1
+        print("\nGame over. The word was:", secret_word)
 
 
-if "_" not in guessed_word:
-    print("\nCongratulations! You guessed the word:", word)
-else:
-    print("\nGame over. The word was:", word)
+def main():
+    words = ["python", "coding", "hangman", "computer"]
+
+    play_again = "y"
+    while play_again == "y":
+        play_game(words)
+        play_again = input("\nPlay again? (y/n): ").lower()
+
+    print("Thanks for playing!")
+
+
+main()

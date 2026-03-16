@@ -10,3 +10,7 @@ Treid to ask copilot to criticise the code but it keeps asking me questions and 
 
 --- AUTOPLAY part ---
 Initial thoughts are that I will need to implement a main function that asks the user for every round if they want to play or autoplay. This will most likely be in a while loop that terminates when the user chooses to end the game. Within the while loop, i'll have to add conditional statements to ask the user whether they want to play themselves or have the computer verse the computer. To ensure that the auto player does not choose an already guessed letter, i'll have to use a list that contains all guesses letters that I will append to in due course. I hope I understood the question properly. Implementation will be quite similar to that of the original hangman game, just that it'll now be automatic. 
+
+Noticed that I need a list of all alphabets so that the computer can guess from it randomly. I'm using the string library to do that. Could have used an actual list from scratch that I type out but this might be less tedious unless it doesn't work which we'll find out later.
+
+Ohh also remembered that I gotta do 6 lives.
